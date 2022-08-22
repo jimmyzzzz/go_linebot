@@ -1,0 +1,16 @@
+% hello_env room=22 %
+
+say: ... 1 ...
+
+note: 數字2和3會被跳過
+pass_n: 2
+
+say: ... 2 ...
+say: ... 3 ...
+say: ... 4 ...
+
+note: setv可以設定變數
+setv: a=1 b=2
+
+note: show可以讀取之前設定的變數
+show: "變數a={a}, 變數b={b}"
