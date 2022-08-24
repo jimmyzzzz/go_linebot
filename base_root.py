@@ -17,6 +17,10 @@ class root_call:
     @property
     def var(self):
         return self.root_ref.var_dict
+	
+	@property
+    def mail(self):
+        return self.root_ref.mail_dict
     
     @property
     def index(self): return self.root_ref.run_index
@@ -32,6 +36,7 @@ class ROOT_BLK:
         self.main_cmds=main_cmds_preprocess(main_cmds)
         self.run_index=0
         self.var_dict={}
+		self.mail_dict={}
         
     def run(self):
         ret_str=''
