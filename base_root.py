@@ -2,11 +2,11 @@
 def title_cmd_preprocess(title_cmd):
     title_cmd=title_cmd.strip()
     title_cmd=title_cmd.split()
-    return title_cmd[1:-1]
+    return title_cmd[2:-1]
 
 def main_cmds_preprocess(main_cmds):
     return [
-        tuple(cmd.strip().split(':'))
+        tuple(c.strip() for c in cmd.split(':'))
         for cmd in main_cmds if ':' in cmd
     ]
 
