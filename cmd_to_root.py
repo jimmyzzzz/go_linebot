@@ -1,7 +1,11 @@
 import importlib
 
 def load_env_module(first_line):
+	first_line=first_line.replace('%', ' % ')
 	first_line_list=first_line.split()
+	
+	print(first_line_list)
+	
 	env=first_line_list[1]
 	env_module=importlib.import_module(env)
 	return env_module
@@ -37,7 +41,7 @@ def str_to_root(cmd_str):
 	cmds=cmd_str.split('\n')
 	env_cmd=cmds[0]
 	main_cmds=cmds[1:]
-
+	
 	env_module=load_env_module(env_cmd)
 	root=env_module.root_blk(
 		env_module=env_module,
