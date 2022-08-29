@@ -117,4 +117,7 @@ class IO_ROOT(BASE_ROOT):
 		return io_root_call(
 			self.kernal_call, self, self.run_index
 		)
+    
+    def close(self):
+        self.kernal_call.close()
 		
