@@ -1,0 +1,10 @@
+% note_env : my_dir1/my_dir2 %
+
+fname: my_file.txt
+note: " hello world! 1"
+note: " hello world! 2"
+
+let: f2=my_file2
+fname: {f2}.txt
+note: " bye 1"
+note: " bye 2"

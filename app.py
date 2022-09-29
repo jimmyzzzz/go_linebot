@@ -36,23 +36,20 @@ def callback():
 
     return 'OK'
 
-from cmd_to_root import cmds_portal
+from kernal import read_cmd
 
 # 學你說話
 @handler.add(MessageEvent, message=TextMessage)
 def pretty_echo(event):
     
-	user_id=event.source.user_id
-	cmd_str=event.message.text
+	(is_cmd, return_txt)=read_cmd(event)
 	
-	(is_cmd, return_txt)=cmds_portal(cmd_str)
+	if not is_cmd: return
 	
-	if is_cmd:
-		return_txt=f'to {user_id}:\n'+return_txt
-		line_bot_api.reply_message(
-			event.reply_token,
-			TextSendMessage(text=return_txt)
-		)
+	line_bot_api.reply_message(
+		event.reply_token,
+		TextSendMessage(text=return_txt)
+	)
 
 if __name__ == "__main__":
     app.run()
