@@ -26,32 +26,32 @@ def callback():
 
     body = request.get_data(as_text=True)
     app.logger.info("Request body: " + body)
-    
+
     try:
         print(body, signature)
         handler.handle(body, signature)
-        
+
     except InvalidSignatureError:
         abort(400)
 
     return 'OK'
 
+
 from kernal import read_cmd
 
-# 學你說話
 @handler.add(MessageEvent, message=TextMessage)
 def pretty_echo(event):
-    
-	(is_cmd, return_txt)=read_cmd(event)
-	
-	if not is_cmd: return
-	
-	line_bot_api.reply_message(
-		event.reply_token,
-		TextSendMessage(text=return_txt)
-	)
+
+    (is_cmd, return_txt) = read_cmd(event)
+
+    if not is_cmd: return
+
+    line_bot_api.reply_message(
+        event.reply_token,
+        TextSendMessage(text=return_txt)
+    )
+
 
 if __name__ == "__main__":
     app.run()
-    
-    
+

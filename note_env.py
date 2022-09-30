@@ -14,7 +14,7 @@ class root(IO_ROOT):
     def run(self):
         title_str = f'save to {self.path}\n'
         return title_str + super().run()
-		
+
 
 @insert_var
 def fname(call, cmd):
@@ -27,7 +27,7 @@ def note(call, cmd):
 
     fp = call.io.open_file(file_path, mode='a+')
 
-    if cmd[0]=='"': cmd=cmd[1:]
-    if cmd[-1]=='"': cmd=cmd[:-1]
-    
+    if cmd[0] == '"': cmd = cmd[1:]
+    if cmd[-1] == '"': cmd = cmd[:-1]
+
     print(cmd, file=fp)
