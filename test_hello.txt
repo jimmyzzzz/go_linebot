@@ -1,0 +1,7 @@
+% hello:  嗨! %
+
+name: 柏丞
+show: 12334
+
+let: x=123
+show: {x}45
