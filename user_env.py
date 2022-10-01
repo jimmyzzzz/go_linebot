@@ -46,3 +46,5 @@ def let(call, cmd):
     for w in wlist:
         k, v = w.split('=')
         call.var[k] = v
+
+        
