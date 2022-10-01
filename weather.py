@@ -72,6 +72,16 @@ class root(BASE_ROOT):
         location_json = jason_dict['records']['location']
         self.var_dict['location_json'] = location_json
 
+    def run_end(self):
+        if not self.return_str_list: return
+        if self.return_str_list[-1] == '\n':
+            self.return_str_list = self.return_str_list[:-1]
+
+        if not self.return_str_list[-1]: return
+        if self.return_str_list[-1][-1] == '\n':
+            self.return_str_list[-1] = self.return_str_list[-1][:-1]
+
+
 def city(call, cmd):
     call.var['city'] = cmd
 
