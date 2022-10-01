@@ -1,0 +1,12 @@
+
+
+# kkkkkk
+% st_hello: 嗨 %
+hello: kkkkkk
+
+# jjjjj kkk
+% st_hello %  
+hello: jjjjj
+
+# kkkkkk
+% does_not_exist: kkk kkk kkk %

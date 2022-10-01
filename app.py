@@ -1,6 +1,5 @@
 
 from __future__ import unicode_literals
-import os
 from flask import Flask, request, abort
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
@@ -22,36 +21,37 @@ handler = WebhookHandler(config.get('line-bot', 'channel_secret'))
 # 接收 LINE 的資訊
 @app.route("/callback", methods=['POST'])
 def callback():
-    signature = request.headers['X-Line-Signature']
+	signature = request.headers['X-Line-Signature']
 
-    body = request.get_data(as_text=True)
-    app.logger.info("Request body: " + body)
-    
-    try:
-        print(body, signature)
-        handler.handle(body, signature)
-        
-    except InvalidSignatureError:
-        abort(400)
+	body = request.get_data(as_text=True)
+	app.logger.info("Request body: " + body)
 
-    return 'OK'
+	try:
+		print(body, signature)
+		handler.handle(body, signature)
 
-from kernal import read_cmd
+	except InvalidSignatureError:
+		abort(400)
 
-# 學你說話
+	return 'OK'
+
+from static_kernal import InitKernal
+
+kernal = InitKernal()
+
 @handler.add(MessageEvent, message=TextMessage)
 def pretty_echo(event):
-    
-	(is_cmd, return_txt)=read_cmd(event)
-	
+
+	(is_cmd, return_txt) = kernal.read_cmd(event)
+
 	if not is_cmd: return
-	
+
 	line_bot_api.reply_message(
 		event.reply_token,
 		TextSendMessage(text=return_txt)
 	)
 
 if __name__ == "__main__":
-    app.run()
-    
-    
+	app.run()
+
+
