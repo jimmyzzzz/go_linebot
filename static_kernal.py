@@ -1,7 +1,9 @@
 
+from run_call import RunCall
 import importlib
 import traceback
 import sys
+import os
 
 
 class KERNAL:
@@ -46,12 +48,18 @@ class InitKernal(KERNAL):
 			PythonKernal(),
 		])
 
+	def run(self, CMD):
+		try:
+			return super().run(CMD)
+		except Exception as error:
+			return traceback.format_exc()
 
 class PythonKernal(KERNAL):
 
 	def __init__(self):
 		super().__init__()
-		self.root_dir_path = "./PythonKernal_root"
+		now_path = os.path.dirname(os.path.realpath(__file__))
+		self.root_dir_path = os.path.join(now_path, "PythonKernal_root")
 		sys.path.append(self.root_dir_path)
 
 	def run(self, CMD):
@@ -59,21 +67,44 @@ class PythonKernal(KERNAL):
 		if cmd_str[0] != '%': return (False, None)
 		return super().run(CMD)
 
+	def python_file_is_exist(self, title_str):
+		title_str = title_str.replace("%", " ")
+		title_str = title_str.replace(":", " ")
+		root_name = title_str.split()[0]
+
+		root_path = os.path.join(self.root_dir_path, f"{root_name}.py")
+		if os.path.isfile(root_path):
+			return True
+		return False
+
 	def is_run_by_self(self, CMD):
 
 		cmd_str = CMD.message.text
 		if cmd_str[0]!='%': return False
 
 		finded_percentage=False
+		title_str = ""
 		for c in cmd_str[1:]:
+			title_str += c
+
 			if finded_percentage:
-				if c=='\n': return True
+				# 確定是合法語法
+				if c=='\n':
+					# 要確認是否存在該py檔
+					if self.python_file_is_exist(title_str): return True
+					return False
+
 				if c!=' ': return False
 			else:
 				if c=='\n': return False
 				if c=='%': finded_percentage=True; continue
 
-		if finded_percentage: return True
+		# 確定是合法語法
+		if finded_percentage:
+			# 要確認是否存在該py檔
+			if self.python_file_is_exist(title_str): return True
+			return False
+
 		return False
 
 	def deconstruct_CMD(self, CMD):
@@ -104,4 +135,40 @@ class PythonKernal(KERNAL):
 
 		if options: raise ValueError('尚未開放 build options')
 
-		return root.run(user_id, root_cmds, user_cmds)
+		path_head = os.path.join(self.root_dir_path, root_name)
+		fp_list = []
+
+		class IoRunCall(RunCall):
+			def __init__(self, *args, **kwargs):
+				super().__init__(*args, **kwargs)
+
+				if self.exists(path_head): return
+				self.makedirs(path_head)
+
+			def open_file(self, path, mode='r'):
+				fp = open(os.path.join(path_head, path), mode=mode)
+				fp_list.append(fp)
+				return fp
+
+			def listdir(self, path):
+				return os.listdir(os.path.join(path_head, path))
+
+			def isfile(self, path):
+				return os.path.isfile(os.path.join(path_head, path))
+
+			def exists(self, path):
+				return os.path.exists(os.path.join(path_head, path))
+
+			def makedirs(self, path):
+				os.makedirs(os.path.join(path_head, path))
+
+			def close(self):
+				for fp in fp_list:
+					fp.close()
+				fp_list.clear()
+
+
+		run_call = IoRunCall(root, user_id, root_cmds, user_cmds)
+		return_str = root.run(run_call, user_id, root_cmds, user_cmds)
+		run_call.close()
+		return return_str
