@@ -1,6 +1,7 @@
 
-def root_cmds_preprocess(root_cmds):
-	return [cmd.strip().split() for cmd in root_cmds]
+def root_cmds_preprocess(root_cmd):
+	#return [cmd.strip().split() for cmd in root_cmds]
+	return root_cmd.strip()
 
 def user_cmds_preprocess(user_cmds):
 	return [
@@ -10,14 +11,14 @@ def user_cmds_preprocess(user_cmds):
 
 class RunCall:
 
-	def __init__(self, root_ref, user_id, root_cmds, user_cmds):
+	def __init__(self, root_ref, user_id, root_cmd, user_cmds):
 		self.root = root_ref
 		self.run_index = 0
 		self.return_str_list = []
 		self.full_error = True
 
 		self.user_id = user_id
-		self.root_cmds = root_cmds_preprocess(root_cmds)
+		self.root_cmd = root_cmds_preprocess(root_cmd)
 		self.user_cmds = user_cmds_preprocess(user_cmds)
 
 	def __setattr__(self, k, v):
