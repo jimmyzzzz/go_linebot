@@ -1,65 +1,17 @@
 
 from run_call import RunCall
+from kernal import KERNAL
 import importlib
-import traceback
 import sys
 import os
 
 
-class KERNAL:
-
-	def __init__(self, sub_kernals=[]):
-		self.sub_kernals = sub_kernals
-		self.root_dict = {}
-
-	def run(self, CMD):
-
-		if self.is_run_by_self(CMD):
-			is_cmd = True
-			try:
-				return_str = self.run_command(CMD)
-
-			except Exception as error:
-				return (is_cmd, traceback.format_exc())
-			return (is_cmd, return_str)
-
-		for sub_kernal in self.sub_kernals:
-			(is_cmd, return_str) = self.sub_kernal_run(sub_kernal, CMD)
-			if is_cmd: return (is_cmd, return_str)
-
-		(is_cmd, return_str) = (False, None)
-		return (is_cmd, return_str)
-
-	def is_run_by_self(self, CMD):
-		return False
-
-	def run_command(CMD):
-		return "this is return str"
-
-	def sub_kernal_run(self, sub_kernal, CMD):
-		(is_cmd, return_str) = sub_kernal.run(CMD)
-		return (is_cmd, return_str)
-
-
-class InitKernal(KERNAL):
-
-	def __init__(self):
-		super().__init__(sub_kernals=[
-			PythonKernal(),
-		])
-
-	def run(self, CMD):
-		try:
-			return super().run(CMD)
-		except Exception as error:
-			return traceback.format_exc()
-
 class PythonKernal(KERNAL):
 
-	def __init__(self):
-		super().__init__()
+	def __init__(self, root_dir="PythonKernal_root", **kwargs):
+		super().__init__(**kwargs)
 		now_path = os.path.dirname(os.path.realpath(__file__))
-		self.root_dir_path = os.path.join(now_path, "PythonKernal_root")
+		self.root_dir_path = os.path.join(now_path, root_dir)
 		sys.path.append(self.root_dir_path)
 
 	def run(self, CMD):

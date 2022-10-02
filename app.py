@@ -35,7 +35,7 @@ def callback():
 
 	return 'OK'
 
-from static_kernal import InitKernal
+from init_kernal import InitKernal
 
 kernal = InitKernal()
 

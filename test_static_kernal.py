@@ -1,6 +1,7 @@
 
-from static_kernal import InitKernal
+from init_kernal import InitKernal
 import sys
+import time
 
 class fake_event:
 
@@ -46,12 +47,15 @@ def file_to_events(file_path):
 def run_kernal(kernal, event_list):
 	total_return_str = ''
 	for event in event_list:
+		time_start = time.time()
 		is_cmd, kernal_return_str = kernal.run(event)
+		time_cost = time.time() - time_start
 
-		return_str = '==================================\n'
-		return_str += f" user:{event.source.user_id} is_cmd:{is_cmd}\n"
-		return_str += '==================================\n'
-		return_str += f"{kernal_return_str}\n"
+		run_info = f" user:'{event.source.user_id}' "
+		run_info += f"is_cmd:{is_cmd} "
+		run_info += f"time:{time_cost:.6f}s\n"
+		divider = "=" * len(run_info) + '\n'
+		return_str = f"{divider}{run_info}{divider}{kernal_return_str}\n"
 		total_return_str += return_str
 
 	return total_return_str

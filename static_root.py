@@ -49,7 +49,3 @@ class BASE_ROOT:
 	def run_start(self, run_call): pass
 	def run_end(self, run_call): pass
 	def run_error(self, run_call): pass
-
-
-class IO_ROOT(BASE_ROOT):
-	pass
