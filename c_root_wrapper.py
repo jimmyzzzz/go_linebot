@@ -9,26 +9,36 @@ class sample_c_root_wapper:
 
 	def __init__(self, root_name, root_path):
 		self.root_name = root_name
-		self.so_module = CDLL(os.path.join(root_path, f"{root_name}.so"))
+		self.so_module = CDLL(root_path)
 
 	def run(self, user_id, root_cmd, user_cmds):
 
+		user_cmds = '\n'.join(user_cmds)
 		run_order = [
 			("get_user_id", user_id),
 			("get_root_cmd", root_cmd),
 			("get_user_cmds", user_cmds)
 		]
-		for fn_name, input_str in run_order:
-			success, return_info = self.fn_call(fn_name, input_str)
-			if success: continue
-			if fn_name in {"get_user_id", "get_root_cmd", "get_user_cmds"}:
-				continue
-			return f"ERROR[{self.root_name}]: {fn_name} not find"
 
-		success, return_info = self.fn_call("root_return", " ")
-		return return_info
+		ignore_set = {"get_user_id", "get_root_cmd", "get_user_cmds"}
+
+		(success, return_str) = self.run_cmd_list(run_order, ignore_set)
+		return return_str
+
+	def run_cmd_list(self, cmd_list, ignore_set):
+		for fn_name, input_str in cmd_list:
+			success, return_info = self.fn_call(fn_name, input_str)
+
+			if success: continue
+			if fn_name in ignore_set:
+				continue
+			return (success, f"ERROR[{self.root_name}]: {fn_name} not find")
+
+		(success, return_info) = self.fn_call("root_return", " ")
+		return (success, return_info)
 
 	def fn_call(self, fn_name, input_str):
+
 		try:
 			fn = getattr(self.so_module, fn_name)
 		except AttributeError as error:
@@ -46,4 +56,21 @@ class sample_c_root_wapper:
 class c_root_wapper(sample_c_root_wapper):
 
 	def run(self, user_id, root_cmd, user_cmds):
-		pass
+		root_cmd = root_cmd.strip()
+		user_cmds = [
+			tuple(c.strip() for c in cmd.split(':', 1))
+			for cmd in user_cmds if ':' in cmd
+		]
+
+		run_order = [
+			("get_user_id", user_id),
+			("get_root_cmd", root_cmd),
+			("run_start", " "),
+		]
+		run_order = [*run_order, *user_cmds]
+		run_order = [*run_order, *[("run_end", " "), ("root_return", " ")]]
+
+		ignore_set = {"get_user_id", "get_root_cmd", "run_start", "run_end"}
+
+		(success, return_str) = self.run_cmd_list(run_order, ignore_set)
+		return return_str

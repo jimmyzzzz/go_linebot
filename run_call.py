@@ -5,7 +5,7 @@ def root_cmds_preprocess(root_cmd):
 
 def user_cmds_preprocess(user_cmds):
 	return [
-		tuple(c.strip() for c in cmd.split(':'))
+		tuple(c.strip() for c in cmd.split(':', 1))
 		for cmd in user_cmds if ':' in cmd
 	]
 

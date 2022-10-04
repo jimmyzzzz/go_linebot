@@ -10,3 +10,11 @@ hello: jjjjj
 
 # kkkkkk
 % does_not_exist: kkk kkk kkk %
+
+# hhhhh
+% test: rrrr rr%
+echo: hahaha
+
+# ccccc
+% test: rrrr rr%
+echo: 777 777
