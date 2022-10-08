@@ -42,7 +42,7 @@ kernal = InitKernal()
 @handler.add(MessageEvent, message=TextMessage)
 def pretty_echo(event):
 
-	(is_cmd, return_txt) = kernal.read_cmd(event)
+	(is_cmd, return_txt) = kernal.run(event)
 
 	if not is_cmd: return
 
