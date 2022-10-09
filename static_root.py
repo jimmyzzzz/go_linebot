@@ -7,7 +7,7 @@ class BASE_ROOT:
     def __init__(self, root_module):
         self.root_module = root_module
 
-    def run(self, run_call, user_id, root_cmds, user_cmds):
+    def run(self, run_call):
 
         self.run_start(run_call)
 
