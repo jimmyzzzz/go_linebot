@@ -21,7 +21,7 @@ class sample_c_root_wapper:
 			("get_user_cmds", user_cmds)
 		]
 
-		ignore_set = {"get_user_id", "get_root_cmd", "get_user_cmds"}
+		ignore_set = {"get_user_id", "get_group_id", "get_root_cmd", "get_user_cmds"}
 
 		(success, return_str) = self.run_cmd_list(run_order, ignore_set)
 		return return_str
