@@ -5,8 +5,9 @@ import time
 
 class fake_event:
 
-	def __init__(self, user_id, txt):
+	def __init__(self, user_id, group_id, txt):
 		self.user_id = user_id
+		self.group_id = group_id
 		self.txt = txt
 
 	@property
@@ -20,12 +21,21 @@ class fake_event:
 
 	@property
 	def source(self):
-		user_id=self.user_id
+		user_id = self.user_id
+		group_id = self.group_id
 
-		class fake_source:
-			def __init__(self):
-				self.user_id = user_id
-		return fake_source()
+		class fake_source: pass
+
+		s = fake_source()
+		s.__dict__['user_id'] = user_id
+
+		if group_id:
+			s.__dict__['type'] = "group"
+			s.__dict__['group_id'] = group_id
+		else:
+			s.__dict__['type'] = "user"
+
+		return s
 
 def file_to_events(file_path):
 	with open(file_path, 'r') as f:
@@ -35,13 +45,21 @@ def file_to_events(file_path):
 		user_block_list = []
 		for block in block_list[1:]:
 			cmd_list = block.split('\n')
-			user_id = cmd_list[0].strip()
+
+			info_list = cmd_list[0].split()
+			if len(info_list)==1:
+				user_id = info_list[0]
+				group_id = None
+			else:
+				user_id = info_list[0]
+				group_id = info_list[1]
+
 			cmds = '\n'.join(cmd_list[1:])
-			user_block_list.append((user_id, cmds))
+			user_block_list.append((user_id, group_id, cmds))
 
 		return [
-			fake_event(user_id, cmds)
-			for user_id, cmds in user_block_list
+			fake_event(user_id, group_id, cmds)
+			for user_id, group_id, cmds in user_block_list
 		]
 
 def run_kernal(kernal, event_list):
@@ -52,6 +70,8 @@ def run_kernal(kernal, event_list):
 		time_cost = time.time() - time_start
 
 		run_info = f" user:'{event.source.user_id}' "
+		if "group_id" in event.source.__dict__:
+			run_info += f" group:'{event.source.group_id}' "
 		run_info += f"is_cmd:{is_cmd} "
 		run_info += f"time:{time_cost:.6f}s\n"
 		divider = "=" * len(run_info) + '\n'

@@ -11,6 +11,14 @@ char* get_user_id(char* s_in){
     return des;
 }
 
+char* get_group_id(char* s_in){
+    char* des = malloc(sizeof(char) * (strlen(s_in) + strlen("get_group_id: ") + strlen("\n")+1));
+    strcpy(des,"get_group_id: ");
+    strcat(des,s_in);
+    strcat(des,"\n");
+    return des;
+}
+
 char* get_root_cmd(char* s_in){
     char* des = malloc(sizeof(char) * (strlen(s_in) + strlen("get_root_cmd: ") + strlen("\n")+1));
     strcpy(des,"get_root_cmd: ");

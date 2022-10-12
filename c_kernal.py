@@ -24,9 +24,9 @@ class SampleCKernal(PercentageKernal):
 	def run_command(self, CMD):
 		(RootOpt, CmdData) = self.get_RootOpt_CmdData(CMD)
 		(root_name, root, option_list) = RootOpt
-		(user_id, root_cmd, user_cmds) = CmdData
+		(user_id, group_id, root_cmd, user_cmds) = CmdData
 
-		return_str = root.run(user_id, root_cmd, user_cmds)
+		return_str = root.run(user_id, group_id, root_cmd, user_cmds)
 		return return_str
 
 
