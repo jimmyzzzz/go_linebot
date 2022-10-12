@@ -1,12 +1,17 @@
 
 
-# kkkkkk
-% st_hello: 嗨 %
+# kkkkkk group1
+% st_hello %
 hello: kkkkkk
 
-# jjjjj kkk
+# jjjjj group1
 % st_hello %  
 hello: jjjjj
 
-# kkkkkk
-% does_not_exist: kkk kkk kkk %
+# hhhhh group2
+% test %
+echo: ss mmjj
+
+# hhhhh group1
+% test %
+echo: ss mmjjss

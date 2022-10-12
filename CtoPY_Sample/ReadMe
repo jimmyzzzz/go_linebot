@@ -1,0 +1,5 @@
+How to use C in Python note in next steps:
+1.create a target C program
+2.compile to .so file, use command :
+	gcc -fPIC -shared -o Sample.so Sample.c
+3.Py file import ctypes (note in Sample.py)
