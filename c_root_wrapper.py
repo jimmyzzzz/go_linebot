@@ -16,7 +16,7 @@ class sample_c_root_wapper:
 		user_cmds = '\n'.join(user_cmds)
 		run_order = [
 			("get_user_id", user_id),
-			("get_group_id", group_id if group_id else ""),
+			("get_group_id", group_id if group_id else "PERSON_ROOM"),
 			("get_root_cmd", root_cmd),
 			("get_user_cmds", user_cmds)
 		]
@@ -66,7 +66,7 @@ class c_root_wapper(sample_c_root_wapper):
 
 		run_order = [
 			("get_user_id", user_id),
-			("get_group_id", group_id if group_id else ""),
+			("get_group_id", group_id if group_id else "PERSON_ROOM"),
 			("get_root_cmd", root_cmd),
 			("run_start", " "),
 		]
