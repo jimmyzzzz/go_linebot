@@ -53,7 +53,6 @@ def file_to_events(file_path):
 		]
 
 def run_kernal(kernal, event_list):
-	total_return_str = ''
 	for event in event_list:
 
 		user_id = event.source.user_id
@@ -68,17 +67,15 @@ def run_kernal(kernal, event_list):
 		run_info += f"is_cmd:{is_cmd} "
 		run_info += f"time:{time_cost:.6f}s\n"
 		divider = "=" * len(run_info) + '\n'
-		return_str = f"{divider}{run_info}{divider}{kernal_return_str}\n"
-		total_return_str += return_str
-
-	return total_return_str
+		return_str = f"{divider}{run_info}{divider}{kernal_return_str}"
+		print(return_str)
 
 def run_file(file_path):
 	kernal = InitKernal()
 
 	event_list = file_to_events(file_path)
-	return run_kernal(kernal, event_list)
+	run_kernal(kernal, event_list)
 
 if __name__ == '__main__':
 	for file_name in sys.argv[1:]:
-		print(run_file(file_name))
+		run_file(file_name)
