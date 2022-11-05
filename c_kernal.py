@@ -1,11 +1,11 @@
 
-from kernal import PercentageKernal
+from kernal import PercentageKernal, DirKernal
 from c_root_wrapper import sample_c_root_wapper
 from c_root_wrapper import c_root_wapper
 import os
 
 
-class SampleCKernal(PercentageKernal):
+class SampleCKernal(PercentageKernal, DirKernal):
 
     def __init__(self, root_dir="CKernal_root", **kwargs):
         super().__init__(root_dir=root_dir, **kwargs)

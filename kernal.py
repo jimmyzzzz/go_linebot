@@ -14,10 +14,13 @@ class KERNAL:
 			try:
 				return_str = self.run_command(CMD)
 
-			except Exception as error:
+			except Exception:
 				return (is_cmd, traceback.format_exc())
 			return (is_cmd, return_str)
 
+		return self.run_sub(CMD)
+
+	def run_sub(self, CMD):
 		for sub_kernal in self.sub_kernals:
 			(is_cmd, return_str) = self.sub_kernal_run(sub_kernal, CMD)
 			if is_cmd: return (is_cmd, return_str)

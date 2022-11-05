@@ -101,15 +101,13 @@ class DollarKernal(HalfKernal):
 
 		return super().run(CMD)
 
-	def sub_kernal_run(self, sub_kernal, CMD):
+	def run_sub(self, CMD):
 		""" 會先將 user_id 替換成 uid """
 
 		user_id = CMD.source.user_id
-
-		# 替換
 		CMD.source.user_id = self.user_data["USER"][user_id]["UID"]
 
-		(is_cmd, return_str) = super().sub_kernal_run(sub_kernal, CMD)
+		(is_cmd, return_str) = super().run_sub(CMD)
 
 		# 加入歡迎語句
 		if is_cmd and self.user_data["USER"][user_id]["HELLO"]:
