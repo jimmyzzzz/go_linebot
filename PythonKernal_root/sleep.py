@@ -24,3 +24,10 @@ class root(BASE_ROOT):
 		call.push_str(f"end: {run_end}\n")
 
 		call.push_str('*' * 20 )
+
+def help(call, cmd):
+	if cmd == "help":
+		call.push_str("[幫助] 輸入多少就會暫停多少秒")
+		return
+
+	call.push_str("[幫助] 請輸入help")
