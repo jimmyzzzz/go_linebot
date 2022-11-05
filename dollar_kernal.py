@@ -87,14 +87,14 @@ class DollarKernal(HalfKernal):
 		if "\n" in cmd_str:
 			return super().run(CMD)
 
-		if cmd_str[0] == "$":
+		if cmd_str[0] == "$" or cmd_str[0] == "＄":
 			CMD.message.text = f"% dk : {cmd_str[1:]} %"
 
-		if cmd_str[0] == "!":
+		if cmd_str[0] == "!" or cmd_str[0] == "！":
 			user_mod = self.user_data["USER"][user_id]["MOD"]
 			CMD.message.text = f"% {user_mod} : {cmd_str[1:]} %"
 
-		if cmd_str[0] == "?":
+		if cmd_str[0] == "?" or cmd_str[0] == "？":
 			user_mod = self.user_data["USER"][user_id]["MOD"]
 			CMD.message.text = f"% {user_mod} %\n"
 			CMD.message.text += f"help: {cmd_str[1:]}"

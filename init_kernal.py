@@ -23,7 +23,7 @@ class InitKernal(KERNAL):
 
 	def run(self, CMD):
 		cmd_str = CMD.message.text
-		if cmd_str[0] not in {'%', '$', '!', '?'}:
+		if cmd_str[0] not in {'%', '$', '!', '?', '＄', '！', '？'}:
 			return (False, None)
 
 		try:
