@@ -2,6 +2,7 @@
 from kernal import KERNAL
 from dollar_kernal import DollarKernal
 from python_kernal import PythonKernal
+from short_call_kernal import ShortCallKernal
 from c_kernal import CKernal
 import traceback
 
@@ -15,6 +16,7 @@ class InitKernal(KERNAL):
 				sub_kernals=[
 					PythonKernal(root_dir="PythonKernal_root"),
 					CKernal(root_dir="CKernal_root"),
+					ShortCallKernal()
 				]
 			),
 		])
