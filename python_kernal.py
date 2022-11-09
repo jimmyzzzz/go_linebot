@@ -38,12 +38,16 @@ class PythonKernal(PercentageKernal, DirKernal):
 		path_head = os.path.join(self.root_dir_path, root_name)
 		fp_list = []
 
+		success, uid = self.init_kernal_ref.pipe("get_uid", line_id=user_id)
+
 		class IoRunCall(RunCall):
 			def __init__(self, *args, **kwargs):
 				super().__init__(*args, **kwargs)
 
 				if self.exists(path_head): return
 				self.makedirs(path_head)
+
+				self.uid = uid
 
 			def open_file(self, path, mode='r'):
 				fp = open(os.path.join(path_head, path), mode=mode)

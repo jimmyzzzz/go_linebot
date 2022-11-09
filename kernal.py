@@ -4,9 +4,16 @@ import os
 
 class KERNAL:
 
-	def __init__(self, sub_kernals=[]):
+	def __init__(self, sub_kernals=[], init_kernal_ref=None):
+		self.init_kernal_ref = init_kernal_ref
 		self.sub_kernals = sub_kernals
 		self.root_dict = {}
+
+	def pipe(self, request, *args, **kwargs):
+		for ker in self.sub_kernals:
+			success, reply = ker.pipe(request, *args, **kwargs)
+			if success: return (success, reply)
+		return (False, None)
 
 	def run(self, CMD):
 		if self.is_run_by_self(CMD):

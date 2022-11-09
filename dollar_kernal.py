@@ -14,6 +14,16 @@ class DollarKernal(HalfKernal):
 		self.file_name = file_name
 		self.user_data = self.read_user_json()
 
+	def pipe(self, request, *args, **kwargs):
+		
+		if request=="get_uid":
+			user_id = kwargs['line_id']
+			if user_id not in self.user_data["USER"]:
+				return super().pipe(request, *args, **kwargs)
+			return (True, self.user_data["USER"][user_id]["UID"])
+
+		return super().pipe(request, *args, **kwargs)
+
 	def save_user_json(self):
 		file_path = os.path.join(self.dir_path, self.file_name)
 		with open(file_path, 'w') as f:
@@ -102,14 +112,11 @@ class DollarKernal(HalfKernal):
 		return super().run(CMD)
 
 	def run_sub(self, CMD):
-		""" 會先將 user_id 替換成 uid """
-
-		user_id = CMD.source.user_id
-		CMD.source.user_id = self.user_data["USER"][user_id]["UID"]
 
 		(is_cmd, return_str) = super().run_sub(CMD)
 
 		# 加入歡迎語句
+		user_id = CMD.source.user_id
 		if is_cmd and self.user_data["USER"][user_id]["HELLO"]:
 			uid = self.user_data["USER"][user_id]["UID"]
 			mod = self.user_data["USER"][user_id]["MOD"]

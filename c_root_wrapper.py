@@ -11,17 +11,18 @@ class sample_c_root_wapper:
 		self.root_name = root_name
 		self.so_module = CDLL(root_path)
 
-	def run(self, user_id, group_id, root_cmd, user_cmds):
+	def run(self, user_id, group_id, uid, root_cmd, user_cmds):
 
 		user_cmds = '\n'.join(user_cmds)
 		run_order = [
 			("get_user_id", user_id),
 			("get_group_id", group_id if group_id else "PERSON_ROOM"),
+			("get_uid", uid if uid else ""),
 			("get_root_cmd", root_cmd),
 			("get_user_cmds", user_cmds)
 		]
 
-		ignore_set = {"get_user_id", "get_group_id", "get_root_cmd", "get_user_cmds"}
+		ignore_set = {"get_user_id", "get_group_id", "get_uid", "get_root_cmd", "get_user_cmds"}
 
 		(success, return_str) = self.run_cmd_list(run_order, ignore_set)
 		return return_str
@@ -57,7 +58,7 @@ class sample_c_root_wapper:
 
 class c_root_wapper(sample_c_root_wapper):
 
-	def run(self, user_id, group_id, root_cmd, user_cmds):
+	def run(self, user_id, group_id, uid, root_cmd, user_cmds):
 		root_cmd = root_cmd.strip()
 		user_cmds = [
 			tuple(c.strip() for c in cmd.split(':', 1))
@@ -67,13 +68,14 @@ class c_root_wapper(sample_c_root_wapper):
 		run_order = [
 			("get_user_id", user_id),
 			("get_group_id", group_id if group_id else "PERSON_ROOM"),
+			("get_uid", uid if uid else ""),
 			("get_root_cmd", root_cmd),
 			("run_start", " "),
 		]
 		run_order = [*run_order, *user_cmds]
 		run_order = [*run_order, *[("run_end", " "), ("root_return", " ")]]
 
-		ignore_set = {"get_user_id", "get_group_id", "get_root_cmd", "run_start", "run_end"}
+		ignore_set = {"get_user_id", "get_group_id", "get_uid", "get_root_cmd", "run_start", "run_end"}
 
 		(success, return_str) = self.run_cmd_list(run_order, ignore_set)
 		return return_str
