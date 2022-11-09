@@ -130,16 +130,16 @@ class DollarKernal(HalfKernal):
 		if main_key == "help":
 			if len(other_keys) != 0: return "[提示]只要輸入help就好"
 
-			return_str = "[幫助] 加*號的是需要自己填的key\n"
-			return_str += "$ lid       ： 查看自己的line_id\n"
-			return_str += "$ uid *NAME ： NAME=設定的用戶名\n"
-			return_str += "$ uid       ： 查看當前用戶名\n"
-			return_str += "$ mod *MOD  ： MOD=要切換的應用名稱\n"
-			return_str += "$ mod       ： 查看當前所在應用\n"
-			return_str += "$ ls        ： 查看應用列表\n"
-			return_str += "$ hello     ： 開啟或關閉歡迎語句\n"
-			return_str += "$ upload    ： 上傳用戶資料表\n"
-			return_str += "$ download  ： 更新用戶資料表"
+			return_str = "[幫助] 加*號的是需要修改的key\n"
+			return_str += "$ lid     ： 查看line_id\n"
+			return_str += "$ uid *N  ： N=設定用戶名\n"
+			return_str += "$ uid     ： 查看當前用戶名\n"
+			return_str += "$ mod *M  ： M=要切換的應用\n"
+			return_str += "$ mod     ： 查看當前所在應用\n"
+			return_str += "$ ls      ： 查看可用應用列表\n"
+			return_str += "$ hello   ： 開關歡迎語句\n"
+			return_str += "$ upload  ： 上傳用戶資料表\n"
+			return_str += "$ download： 更新用戶資料表"
 			return return_str
 
 		if main_key == "lid":
