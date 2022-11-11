@@ -33,7 +33,7 @@ def file_to_events(file_path):
         # 去除結尾的\n
         block_list = [
             b_str[:-1] for b_str in block_list[:-1]
-        ] + block_list[-1:]
+        ] + [block_list[-1] if block_list[-1][-1]!="\n" else block_list[-1][-1:]]
 
         user_block_list = []
         for block in block_list[1:]:
