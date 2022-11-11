@@ -85,9 +85,10 @@ class c_root_wapper(sample_c_root_wapper):
             ("get_uid", uid if uid else ""),
             ("get_root_cmd", root_cmd_str),
             ("run_start", " "),
+            *user_cmds,
+            ("run_end", " "),
+            ("root_return", " ")
         ]
-        run_order = [*run_order, *user_cmds]
-        run_order = [*run_order, *[("run_end", " "), ("root_return", " ")]]
 
         ignore_set = {"get_user_id", "get_group_id", "get_uid", "get_root_cmd", "run_start", "run_end"}
 
