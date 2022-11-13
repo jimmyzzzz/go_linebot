@@ -30,4 +30,9 @@ class ShortCallKernal(HalfKernal):
 
     def py(self, CMD, CmdData):
         (user_id, group_id, root_cmd, user_cmds) = CmdData
-        return str(eval(root_cmd))
+
+        def run_CMD(root_cmd):
+            HalfKernal = "HalfKernal"
+            return str(eval(root_cmd))
+
+        return run_CMD(root_cmd)
