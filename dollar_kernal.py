@@ -129,8 +129,7 @@ class DollarKernal(HalfKernal):
 	def dk(self, CMD, CmdData):
 		(user_id, group_id, root_cmd, user_cmds) = CmdData
 
-
-		if not root_cmd: return "[提示]請輸入: help"
+		if not root_cmd.strip(): return "[提示]查看幫助請輸入: $ help"
 
 		root_cmd_list = root_cmd.split()
 		main_key = root_cmd_list[0]
