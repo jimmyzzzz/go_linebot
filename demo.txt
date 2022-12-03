@@ -1,0 +1,15 @@
+
+
+# user1 group1
+% hello %
+hello: kkkkkk
+
+# user2 group1
+% hello %  
+hello: jjjjj
+
+# user1 group2
+% ctest %
+
+# user2 group1
+% ctest %
