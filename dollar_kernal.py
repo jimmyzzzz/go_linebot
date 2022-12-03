@@ -13,6 +13,17 @@ class DollarKernal(HalfKernal):
 		self.dir_path = os.path.join(now_path, dir_name)
 		self.file_name = file_name
 		self.user_data = self.read_user_json()
+		self.mod_name_list = self.get_root_names()
+
+	def pipe(self, request, *args, **kwargs):
+
+		if request=="get_uid":
+			user_id = kwargs['line_id']
+			if user_id not in self.user_data["USER"]:
+				return super().pipe(request, *args, **kwargs)
+			return (True, self.user_data["USER"][user_id]["UID"])
+
+		return super().pipe(request, *args, **kwargs)
 
 	def save_user_json(self):
 		file_path = os.path.join(self.dir_path, self.file_name)
@@ -89,6 +100,7 @@ class DollarKernal(HalfKernal):
 
 		if cmd_str[0] == "$" or cmd_str[0] == "＄":
 			CMD.message.text = f"% dk : {cmd_str[1:]} %"
+			return super().run(CMD)
 
 		if cmd_str[0] == "!" or cmd_str[0] == "！":
 			user_mod = self.user_data["USER"][user_id]["MOD"]
@@ -102,26 +114,22 @@ class DollarKernal(HalfKernal):
 		return super().run(CMD)
 
 	def run_sub(self, CMD):
-		""" 會先將 user_id 替換成 uid """
-
-		user_id = CMD.source.user_id
-		CMD.source.user_id = self.user_data["USER"][user_id]["UID"]
 
 		(is_cmd, return_str) = super().run_sub(CMD)
 
 		# 加入歡迎語句
+		user_id = CMD.source.user_id
 		if is_cmd and self.user_data["USER"][user_id]["HELLO"]:
 			uid = self.user_data["USER"][user_id]["UID"]
 			mod = self.user_data["USER"][user_id]["MOD"]
-			return_str = f"[{uid} in {mod}]:\n" + return_str
+			return_str = f"[{uid} in {mod}]: ↴\n" + return_str
 
 		return (is_cmd, return_str)
 
 	def dk(self, CMD, CmdData):
 		(user_id, group_id, root_cmd, user_cmds) = CmdData
 
-
-		if not root_cmd: return "[提示]請輸入: help"
+		if not root_cmd.strip(): return "[提示]查看幫助請輸入: $ help"
 
 		root_cmd_list = root_cmd.split()
 		main_key = root_cmd_list[0]
@@ -131,15 +139,17 @@ class DollarKernal(HalfKernal):
 			if len(other_keys) != 0: return "[提示]只要輸入help就好"
 
 			return_str = "[幫助] 加*號的是需要修改的key\n"
-			return_str += "$ lid     ： 查看line_id\n"
-			return_str += "$ uid *N  ： N=設定用戶名\n"
-			return_str += "$ uid     ： 查看當前用戶名\n"
-			return_str += "$ mod *M  ： M=要切換的應用\n"
-			return_str += "$ mod     ： 查看當前所在應用\n"
-			return_str += "$ ls      ： 查看可用應用列表\n"
-			return_str += "$ hello   ： 開關歡迎語句\n"
-			return_str += "$ upload  ： 上傳用戶資料表\n"
-			return_str += "$ download： 更新用戶資料表"
+			return_str += "$ lid      ： 查看line_id\n"
+			return_str += "$ uid *N   ： N=設定用戶名\n"
+			return_str += "$ uid      ： 查看當前用戶名\n"
+			return_str += "$ mod *M   ： M=要切換的應用\n"
+			return_str += "$ mod      ： 查看當前所在應用\n"
+			return_str += "$ ls       ： 查看可用應用列表\n"
+			return_str += "$ rels     ： 更新可用應用列表\n"
+			return_str += "$ hello    ： 開關歡迎語句\n"
+			return_str += "$ run *PC  ： 運行完整指令(%)\n"
+			return_str += "$ upload   ： 上傳用戶資料表\n"
+			return_str += "$ download ： 更新用戶資料表"
 			return return_str
 
 		if main_key == "lid":
@@ -172,13 +182,24 @@ class DollarKernal(HalfKernal):
 			if user_id not in self.user_data["USER"]:
 				return f"[提示] user_id:{user_id} 不存在"
 
+			mod_name_list = [
+				os.path.splitext(mod_name)[0] for mod_name in self.mod_name_list
+			]
+			if new_mod not in mod_name_list:
+				return f"[提示] 應用({new_mod})不存在"
+
 			old_mod = self.user_data["USER"][user_id]["MOD"]
 			self.user_data["USER"][user_id]["MOD"] = new_mod
 			return f"[提示] 成功: {old_mod} -> {new_mod}"
 
 		if main_key == "ls":
 			if len(other_keys) != 0: return "[提示] 輸入太多key"
-			return "\n".join(["[應用列表]"] + self.get_root_names())
+			return "\n".join(["[應用列表]"] + self.mod_name_list)
+
+		if main_key == "rels":
+			if len(other_keys) != 0: return "[提示] 輸入太多key"
+			self.mod_name_list = self.get_root_names()
+			return "\n".join(["[應用列表]"] + self.mod_name_list)
 
 		if main_key == "hello":
 			if len(other_keys) != 0: return "[提示] 輸入太多key"
@@ -189,6 +210,14 @@ class DollarKernal(HalfKernal):
 			except Exception:
 				return "[提示] 更新失敗\n" + traceback.format_exc()
 			return f"[提示] 更新成功: {old_hello} -> {new_hello}"
+
+		if main_key == "run":
+			run_key, new_root_cmd = root_cmd.split(maxsplit=1)
+			CMD.message.text = f"% {new_root_cmd} %"
+			(is_cmd, return_str) = self.run_sub(CMD)
+
+			if is_cmd: return return_str
+			return "[提示] 指令解析失敗"
 
 		if main_key == "upload":
 			if len(other_keys) != 0: return "[提示] 輸入太多key"

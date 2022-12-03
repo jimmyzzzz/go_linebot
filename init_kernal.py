@@ -12,11 +12,12 @@ class InitKernal(KERNAL):
 	def __init__(self):
 		super().__init__(sub_kernals=[
 			DollarKernal(
+				init_kernal_ref=self,
 				dir_name='DollarKernal_data', file_name='user_data.json',
 				sub_kernals=[
-					PythonKernal(root_dir="PythonKernal_root"),
-					CKernal(root_dir="CKernal_root"),
-					ShortCallKernal()
+					PythonKernal(root_dir="PythonKernal_root", init_kernal_ref=self),
+					CKernal(root_dir="CKernal_root", init_kernal_ref=self),
+					ShortCallKernal(init_kernal_ref=self)
 				]
 			),
 		])

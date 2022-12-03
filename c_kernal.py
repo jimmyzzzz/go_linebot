@@ -32,7 +32,9 @@ class SampleCKernal(PercentageKernal, DirKernal):
         (root_name, root, option_list) = RootOpt
         (user_id, group_id, root_cmd, user_cmds) = CmdData
 
-        return_str = root.run(user_id, group_id, root_cmd, user_cmds)
+        success, uid = self.init_kernal_ref.pipe("get_uid", line_id=user_id)
+
+        return_str = root.run(user_id, group_id, uid, root_cmd, user_cmds)
         return return_str
 
 

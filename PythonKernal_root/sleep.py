@@ -5,29 +5,31 @@ from time import sleep
 
 class root(BASE_ROOT):
 
-	def run_start(self, call):
+    def run_start(self, call):
 
-		user_id = call.user_id
-		group_id = call.group_id
-		sleep_time = int(call.root_cmd) if call.root_cmd else 0
+        uid = call.uid
+        group_id = call.group_id
 
-		call.push_str(f"> {user_id}\n")
-		if group_id: call.push_str(f"group: {group_id}\n")
+        if call.root_cmd:
+            sleep_time = int(call.root_cmd)
 
-		call.push_str('*' * 20 + '\n')
+            call.push_str(f"> {uid}\n")
+            if group_id: call.push_str(f"group: {group_id}\n")
 
-		run_start = datetime.now().strftime('%m/%d %H:%M:%S')
-		sleep(sleep_time)
-		run_end = datetime.now().strftime('%m/%d %H:%M:%S')
+            call.push_str('*' * 20 + '\n')
 
-		call.push_str(f"start: {run_start}\n")
-		call.push_str(f"end: {run_end}\n")
+            run_start = datetime.now().strftime('%m/%d %H:%M:%S')
+            sleep(sleep_time)
+            run_end = datetime.now().strftime('%m/%d %H:%M:%S')
 
-		call.push_str('*' * 20 )
+            call.push_str(f"start: {run_start}\n")
+            call.push_str(f"end: {run_end}\n")
+
+            call.push_str('*' * 20 )
 
 def help(call, cmd):
-	if cmd == "help":
-		call.push_str("[幫助] 輸入多少就會暫停多少秒")
-		return
+    if cmd == "help":
+        call.push_str("[幫助] 輸入多少就會暫停多少秒")
+        return
 
-	call.push_str("[幫助] 請輸入help")
+    call.push_str("[幫助] 請輸入help")
