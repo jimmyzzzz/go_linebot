@@ -2,10 +2,10 @@
 # root級開發者指南
 
 目錄
-1. 測試環境
-2. 用戶指令
-3. c-root 開發
-4. python-root 開發
+1. 測試環境介紹
+2. 用戶指令介紹
+3. c-root 開發介紹
+4. python-root 開發介紹
 
 ---
 
@@ -20,7 +20,7 @@ python run_script.py demo.txt
 
 ### 對話文件
 
-其中demo.txt為模擬用戶對話的腳本文件，下面是demo.txt的範例:
+其中demo.txt為模擬用戶對話的腳本文件，下面是範例:
 ```
 
 # l123 r123
@@ -151,7 +151,7 @@ func2 : this is user cmd2
 
 ## c-root 開發介紹
 
-所有的c-root須被編譯成`.so`文件並放置在`./CKeranl_root`資料夾內，如果kernal沒有在該資料夾內發現名為`env`的so文件則會失敗。
+所有的c-root須被編譯成`.so`文件並放置在`./CKeranl_root`工作目錄內。
 
 編譯指令可以使用:
 ```bash
