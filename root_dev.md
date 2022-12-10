@@ -141,7 +141,7 @@ func2 : this is user cmd2
 2. 呼叫函數func1: `this is user cmd1`
 3. 呼叫函數func2: `this is user cmd2`
 
-## c root 開發介紹
+## c-root 開發介紹
 
 所有的c-root須被編譯成`.so`文件並放置在`./CKeranl_root`資料夾內，如果kernal沒有在該資料夾內發現名為`env`的so文件則會失敗。
 
@@ -223,6 +223,7 @@ f2 : this is second cmd
 
 用戶可能會有3種形式的root-cmd呼叫，三種形式所會產生的輸入是不同的。
 
+---
 **類型一:無呼叫root-cmd**
 
 如下:
@@ -231,6 +232,7 @@ f2 : this is second cmd
 ```
 輸入為: ''
 
+---
 **類型二:呼叫root-cmd但無輸入**
 
 如下:
@@ -239,7 +241,8 @@ f2 : this is second cmd
 ```
 輸入為: ' '
 
-**類型二:呼叫root-cmd且有輸入**
+---
+**類型三:呼叫root-cmd且有輸入**
 
 如下:
 ```
@@ -247,6 +250,7 @@ f2 : this is second cmd
 ```
 輸入為: 'this is root cmd'，可以發現兩端的空白會被刪除。
 
+---
 #### user-cmd函數
 
 如下:
@@ -256,6 +260,6 @@ f1: this is a cmd
 ```
 輸入f1函數的內容為: 'this is a cmd'，可以發現兩端的空白會被刪除。
 
-## python root 開發介紹
+## python-root 開發介紹
 
 敬請期待。
