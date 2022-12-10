@@ -87,7 +87,6 @@ class c_root_wapper(sample_c_root_wapper):
             ("run_start", " "),
             *user_cmds,
             ("run_end", " "),
-            ("root_return", " ")
         ]
 
         ignore_set = {"get_user_id", "get_group_id", "get_uid", "get_root_cmd", "run_start", "run_end"}
