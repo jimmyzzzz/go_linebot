@@ -7,6 +7,8 @@
 3. c-root 開發
 4. python-root 開發
 
+---
+
 ## 測試環境介紹
 
 測試環境是為在上線到line之前給開發者除錯或測試而生的，使用命令行來運行測試環境:
@@ -14,6 +16,7 @@
 ```bash
 python run_script.py demo.txt
 ```
+---
 
 ### 對話文件
 
@@ -52,6 +55,8 @@ python run_script.py demo.txt
 
 `＃`行的第一段文字為用戶的line-id，而不是用戶在賴上的名字。第二段文字為該對話所在的房間id，而不是房間在賴上的名字，且第二段為選填，如果沒填則視該段對話為用戶私訊line-bot的內容。
 
+---
+
 ### 指令說明
 
 可以使用`-h`選項來查看幫助:
@@ -71,6 +76,7 @@ python run_script.py demo1.txt -k=stat.pk
 
 `注意:`保存root的狀態目前僅對python-root有效。
 
+---
 
 ## 用戶指令介紹
 
@@ -85,9 +91,9 @@ python run_script.py demo1.txt -k=stat.pk
 
 下面是短指令轉換成成指令的格式範例，我們預設用戶所在的模式為`env`。(切換模式可以通過指令:`$ mod env`)
 
-### 指令轉換
-
 ---
+
+### 指令轉換
 
 $短指令:
 ```
@@ -141,6 +147,8 @@ func2 : this is user cmd2
 2. 呼叫函數func1: `this is user cmd1`
 3. 呼叫函數func2: `this is user cmd2`
 
+---
+
 ## c-root 開發介紹
 
 所有的c-root須被編譯成`.so`文件並放置在`./CKeranl_root`資料夾內，如果kernal沒有在該資料夾內發現名為`env`的so文件則會失敗。
@@ -149,6 +157,8 @@ func2 : this is user cmd2
 ```bash
 gcc -fPIC -shared -o Sample.so Sample.c
 ```
+
+---
 
 ### kernal-root運作介紹
 
@@ -161,6 +171,8 @@ gcc -fPIC -shared -o Sample.so Sample.c
 目前僅支援CKernal+c_root_wapper，kernal的工作目錄在`./CKeranl_root`。
 
 目前並沒有SampleCKernal+sample_c_root_wapper的流程運作實例，如需要添加可以修改文件`init_kernal.py`中的kernal樹，來添加SampleCKernal的實例，並指定一個kernal的工作目錄。
+
+---
 
 ### 呼叫流程
 
@@ -207,6 +219,8 @@ f2 : this is second cmd
 8. 呼叫 run_end 函數。若該函數呼叫成功，傳入' '，回傳值會被忽略。若該函數呼叫失敗，則被忽略。
 9. 呼叫 root_return 函數。若該函數呼叫成功，傳入' '，回傳值會被顯示給用戶。若該函數呼叫失敗，則呼叫流程直接停止並顯示錯誤訊息。
 
+---
+
 ### 呼叫函數
 
 下面介紹呼叫函數的其他細節。
@@ -251,6 +265,7 @@ f2 : this is second cmd
 輸入為: 'this is root cmd'，可以發現兩端的空白會被刪除。
 
 ---
+
 #### user-cmd函數
 
 如下:
@@ -259,6 +274,8 @@ f2 : this is second cmd
 f1: this is a cmd
 ```
 輸入f1函數的內容為: 'this is a cmd'，可以發現兩端的空白會被刪除。
+
+---
 
 ## python-root 開發介紹
 
